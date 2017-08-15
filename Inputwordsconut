@@ -13,8 +13,7 @@ object wordcount {
 val word = Console.readLine
 println("You entered " + word)
 val input = sc.textFile("input.txt")
-val splitedLines = input.flatMap(line => line.split(" "))
-                    .filter(x => x.equals(word))
+val splitedLines = input.flatMap(line => line.split(" ")).filter(x => x.equals(word))
 
 System.out.println(splitedLines.count())
 }
