@@ -1,12 +1,12 @@
 case class Employee1(Employee_id:Int,revenue:Int,modified_date:String);
 
-val dfEmployees = sc.textFile("hareesh/employees.txt").map(_.split(",")).map(P=> Employee1(P(0).trim.toInt,P(1).trim.toInt,P(2))).toDF();
+val dfEmployees = sc.textFile("murali/input").map(_.split(",")).map(P=> Employee1(P(0).trim.toInt,P(1).trim.toInt,P(2))).toDF();
 
-val df = dfEmployees.withColumn("timestamp",to_date(unix-timestamp($"Modified_date","MMM-YYY").cast("timestamp")))
+val df = dfEmployees.withColumn("time_stamp",to_date(unix_timestamp($"modified_date","MMM-YYY").cast("timestamp")))
 
-val df2 = df.groupBy($"Employee_id").agg(max($"timestamp"))
+val df2 = df.groupBy($"Employee_id").agg(max($"time_stamp"));
 
- val df3 = df.alias("a").Join(df2.alias("b"),df("Employee_id")===df2("Employee-id")&& df("timestamp")===df2("timestamp")).Select($"a.Employee_id",$"a.modifie
-d_date")
+val df3 = df.alias("a").join(df2.alias("b"),df("Employee_id")===df2("Employee_id") && df("time_stamp")===df2("max(time_stamp)")).select($"a.Employee_id",$"a
+.revenue",$"a.modified_date")
 
 df3.show
